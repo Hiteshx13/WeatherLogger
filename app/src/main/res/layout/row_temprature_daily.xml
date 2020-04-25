@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.accenture.weatherlogger.service.retrofit.pojo.response.Daily" />
+    </data>
+
+    <!-- <androidx.cardview.widget.CardView
+         android:layout_width="@dimen/_130sdp"
+         android:layout_height="wrap_content"
+         android:layout_marginStart="@dimen/dp10"
+         android:layout_marginEnd="@dimen/dp10"
+         android:layout_marginBottom="@dimen/_5sdp"
+         card_view:cardBackgroundColor="@color/colorGray"
+         card_view:cardCornerRadius="0dp"
+         card_view:cardElevation="@dimen/_5sdp">
+ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_border_blue_filled_white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_5sdp">
+
+        <LinearLayout
+            android:id="@+id/llWeather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp">
+
+            <ImageView
+                android:id="@+id/imgWeatherIcon"
+                android:layout_width="@dimen/_30ssp"
+                android:layout_height="@dimen/_30ssp"
+                android:src="@drawable/ic_cloud" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginLeft="@dimen/_3sdp"
+                android:fontFamily="@font/font_pieces_of_eight"
+                android:text="@{model.getStatus()}"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/_18ssp"
+                tools:text="Clear" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginLeft="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:background="@color/colorGrayTrans"
+            android:orientation="vertical"
+            android:padding="@dimen/_5sdp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDateWeek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_pieces_of_eight"
+                android:text="@{model.getDayOfWeek()}"
+                android:textColor="@color/colorBlackTrans"
+                android:textSize="@dimen/_15ssp"
+                tools:text="Wednesday" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:fontFamily="@font/font_pieces_of_eight"
+                android:text="@{model.getCurrentDate()}"
+                android:textColor="@color/colorBlackTrans"
+                android:textSize="@dimen/_15ssp"
+                tools:text="22-05-2019" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSunSet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_merriweather_sans"
+                android:layout_weight="1"
+                android:layout_gravity="end"
+                android:text="@{model.getSunSet()}"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_10ssp"
+                android:textStyle="bold"
+                tools:text="Sunset : 10:30" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSunrise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_merriweather_sans"
+                android:gravity="center"
+                android:text="@{model.getSunrise()}"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_10ssp"
+                android:textStyle="bold"
+                tools:text="Sunrise: 08:30" />
+
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:fontFamily="@font/font_pieces_of_eight"
+            android:text="@string/temprature"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/_15ssp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTempDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.temp.getTempratureDay()}"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_8ssp"
+                android:fontFamily="@font/font_merriweather_sans"
+                tools:text="Day :04:00 " />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTempNight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/font_merriweather_sans"
+                android:text="@{model.temp.getTempratureNight()}"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_8ssp"
+                tools:text="Night : 20:22" />
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

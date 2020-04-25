@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWeather"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layoutAnimation="@anim/layout_animation"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/progressbar"
+            style="@style/AVLoadingIndicatorView"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_filled_blue"
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone"
+            app:indicatorColor="@color/colorWhite"
+            app:indicatorName="BallSpinFadeLoaderIndicator"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:maxLines="2"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_20sdp"
+            android:text="@string/no_temprature_data_found"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_18ssp" />
+    </RelativeLayout>
+</layout>

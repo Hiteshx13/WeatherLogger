@@ -1,0 +1,26 @@
+package com.accenture.weatherlogger.service.database.dao
+
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import com.accenture.weatherlogger.service.database.table.WeatherDetailString
+
+@Dao
+interface WeatherDao {
+
+    @Query("SELECT * FROM WeatherDetailString")
+    fun getAllRecords(): List<WeatherDetailString>
+
+    @Insert
+    fun insertData(weather: WeatherDetailString)
+
+    @Query("SELECT COUNT(IDWeather) FROM WeatherDetailString")
+    fun getCount(): Int
+
+    @Delete
+    fun delete(model: WeatherDetailString)
+
+    @Query("DELETE  FROM WeatherDetailString where IDWeather = :recordId")
+    fun deleteByPosition(recordId: Int)
+}

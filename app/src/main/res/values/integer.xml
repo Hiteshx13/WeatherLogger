@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="slide_animation_duration">300</integer>
+    <integer name="slide_animation_duration_400">400</integer>
+    <integer name="slide_animation_duration_500">500</integer>
+</resources>

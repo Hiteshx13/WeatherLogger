@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Weather Logger</string>
+    <string name="api_key_weather">4fea450345c57c6b0d7360939fe4a096</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="clode">Close</string>
+    <string name="location_settings">"Location settings are not satisfied."</string>
+    <string name="no_internet">No internet connection. Please turn it on from device settings.</string>
+    <string name="enable_gps">Please enable location services from application settings.</string>
+    <string name="location_permission_not_allowed">Please grant location permission from application  settings. otherwise Riga city will be selected as default location. </string>
+    <string name="get">GET</string>
+    <string name="more_details">More Details</string>
+    <string name="no_temprature_data_found">No temprature data found</string>
+    <string name="temprature">Temprature:</string>
+    <string name="date">Date:</string>
+    <string name="feels_like">Feels Like</string>
+
+</resources>
