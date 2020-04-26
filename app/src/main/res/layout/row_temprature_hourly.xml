@@ -106,7 +106,7 @@
                     android:text="@{model.getFeelsLike()}"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_10ssp"
-                    tools:text="Feals Like" />
+                    tools:text="Feels Like" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"

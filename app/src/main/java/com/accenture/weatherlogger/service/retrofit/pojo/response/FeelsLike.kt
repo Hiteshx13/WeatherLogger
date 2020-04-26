@@ -2,13 +2,27 @@ package com.accenture.weatherlogger.service.retrofit.pojo.response
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 data class FeelsLike(
+    @PrimaryKey
+    @SerializedName("id_feelslike")
     var IDFeelslike: Int = 0,
+
+    @SerializedName("day")
+
     var day: Double? = null,
+
+    @SerializedName("night")
     var night: Double? = null,
+
+    @SerializedName("eve")
     var eve: Double? = null,
+    @SerializedName("morn")
+
     var morn: Double? = null
+
 
 ) : Parcelable {
     constructor(source: Parcel) : this(

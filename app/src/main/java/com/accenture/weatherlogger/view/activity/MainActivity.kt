@@ -34,7 +34,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
     /** IF DEVICE LOCATION IS NOT ENABLED THAN BELOW LOCATION WILL BE USED TO GET WEATHER DETAILS**/
     private var LATITUDE = "56.9512938"
     private var LONGITUDE = "24.0958929"
-    private var apiCallRepeatTime: Long = 30000
+    private var apiCallRepeatTime: Long = 60000
     /** BELOW VARIABLE DECIDE TO AUTO-CALL API OR NOT AT EVERY REPEATED TIME DURATION**/
     private var isAutoCallBlocked = false
     var isResponseDialogOpen = false
@@ -70,11 +70,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
                             object :
                                 ItemClickListener {
                                 override fun onClick(status: Boolean) {
-                                     /**checking if dialog is open or not to block API call untill current dialog will be closed**/
+                                    /**checking if dialog is open or not to block API call untill current dialog will be closed**/
                                     isResponseDialogOpen = false
                                     if (status) {
                                         val strResponse = Gson().toJson(response)
-                                        val weatherData =
+                                        var weatherData =
                                             WeatherDetailString(WeatherData = strResponse)
                                         roomDB.getWeatherDao()
                                             .insertData(weatherData)

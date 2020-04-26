@@ -17,7 +17,6 @@ import com.accenture.weatherlogger.service.retrofit.pojo.response.WeatherDetail
 import com.accenture.weatherlogger.service.utils.*
 import com.accenture.weatherlogger.view.adapter.HourlyTempratureAdapter
 
-
 class WeatherDetailsActivity : BaseActivity<ActivityWeatherDetailsBinding>() {
 
     companion object {

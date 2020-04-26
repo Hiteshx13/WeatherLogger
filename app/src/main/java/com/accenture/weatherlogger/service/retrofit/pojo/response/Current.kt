@@ -2,29 +2,64 @@ package com.accenture.weatherlogger.service.retrofit.pojo.response
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.accenture.weatherlogger.service.utils.convertTemprature
 import com.accenture.weatherlogger.service.utils.convertUTCtoDateTime
 import com.accenture.weatherlogger.service.utils.convertUTCtoTime
 import com.accenture.weatherlogger.service.utils.getDayOfWeek
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 
 data class Current(
-
+    @PrimaryKey(autoGenerate = true)
     var IDCurrent: Int = 0,
 
+
+    @SerializedName("dt")
+    @Expose
     var dt: Int? = null,
+    @SerializedName("sunrise")
+    @Expose
     var sunrise: Int? = null,
+    @SerializedName("sunset")
+    @Expose
     var sunset: Int? = null,
+    @SerializedName("temp")
+    @Expose
     var temp: Double? = null,
+    @SerializedName("feels_like")
+    @Expose
     var feelsLike: Double? = null,
+    @SerializedName("pressure")
+    @Expose
     var pressure: Int? = null,
+    @SerializedName("humidity")
+    @Expose
     var humidity: Int? = null,
+    @SerializedName("dew_point")
+    @Expose
     var dewPoint: Double? = null,
+    @SerializedName("uvi")
+    @Expose
     var uvi: Double? = null,
+    @SerializedName("clouds")
+    @Expose
     var clouds: Int? = null,
+    @SerializedName("visibility")
+    @Expose
     var visibility: Int? = null,
+    @SerializedName("wind_speed")
+    @Expose
     var windSpeed: Double? = null,
+    @SerializedName("wind_deg")
+    @Expose
     var windDeg: Int? = null,
+
+    @SerializedName("weather")
+    @Ignore
+    @Expose
     var weather: List<Weather?>? = null
 
 ) : Parcelable {
@@ -41,8 +76,8 @@ data class Current(
 
         var status = ""
         if (!weather.isNullOrEmpty()) {
-            val listWeather: List<Weather?>? = weather
-            val weatherData: Weather? = listWeather?.get(0)
+            var listWeather: List<Weather?>? = weather
+            var weatherData: Weather? = listWeather?.get(0)
             status = weatherData?.description ?: ""
         }
         return status

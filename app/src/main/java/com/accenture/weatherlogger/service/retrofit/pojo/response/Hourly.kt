@@ -2,21 +2,47 @@ package com.accenture.weatherlogger.service.retrofit.pojo.response
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.accenture.weatherlogger.service.utils.convertTemprature
 import com.accenture.weatherlogger.service.utils.convertUTCtoTime
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 data class Hourly(
-
+    @PrimaryKey
+    @SerializedName("id_hourly")
     var IDHourly: Int = 0,
+    @SerializedName("dt")
+    @Expose
     var dt: Int? = null,
+    @SerializedName("temp")
+    @Expose
     var temp: Double? = null,
+    @SerializedName("feels_like")
+    @Expose
     var feelsLike: Double? = null,
+    @SerializedName("pressure")
+    @Expose
     var pressure: Int? = null,
+    @SerializedName("humidity")
+    @Expose
     var humidity: Int? = null,
+    @SerializedName("dew_point")
+    @Expose
     var dewPoint: Double? = null,
+    @SerializedName("clouds")
+    @Expose
     var clouds: Int? = null,
+    @SerializedName("wind_speed")
+    @Expose
     var windSpeed: Double? = null,
+    @SerializedName("wind_deg")
+    @Expose
     var windDeg: Int? = null,
+    @Ignore
+    @Expose
+    @SerializedName("weather")
     var weather: List<Weather?>? = null,
     var isAnimation: Boolean = false
 ) : Parcelable {
@@ -60,8 +86,8 @@ data class Hourly(
 
         var status = ""
         if (!weather.isNullOrEmpty()) {
-            val listWeather: List<Weather?>? = weather
-            val weatherData: Weather? = listWeather?.get(0)
+            var listWeather: List<Weather?>? = weather
+            var weatherData: Weather? = listWeather?.get(0)
             status = weatherData?.description ?: ""
         }
         return status

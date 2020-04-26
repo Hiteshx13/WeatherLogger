@@ -2,15 +2,31 @@ package com.accenture.weatherlogger.service.retrofit.pojo.response
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.PrimaryKey
 import com.accenture.weatherlogger.service.utils.convertTemprature
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 data class Temp(
+    @PrimaryKey
     var IDTemp: Int = 0,
+    @SerializedName("day")
+    @Expose
     var day: Double? = null,
+    @SerializedName("min")
+    @Expose
     var min: Double? = null,
+    @SerializedName("max")
+    @Expose
     var max: Double? = null,
+    @SerializedName("night")
+    @Expose
     var night: Double? = null,
+    @SerializedName("eve")
+    @Expose
     var eve: Double? = null,
+    @SerializedName("morn")
+    @Expose
     var morn: Double? = null
 ) : Parcelable {
     constructor(source: Parcel) : this(
