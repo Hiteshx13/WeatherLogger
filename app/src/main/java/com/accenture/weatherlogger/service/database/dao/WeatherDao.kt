@@ -12,6 +12,9 @@ interface WeatherDao {
     @Query("SELECT * FROM WeatherDetailString")
     fun getAllRecords(): List<WeatherDetailString>
 
+    @Query("SELECT * FROM WeatherDetailString where IDWeather = :recordPos")
+    fun getRecordFromPosition(recordPos:Int): WeatherDetailString
+
     @Insert
     fun insertData(weather: WeatherDetailString)
 

@@ -2,6 +2,7 @@ package com.accenture.weatherlogger.service.utils
 
 import android.app.Dialog
 import android.content.Context
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.Window
 import androidx.databinding.DataBindingUtil
@@ -58,6 +59,15 @@ fun showWeatherDialog(
         listener.onClick(false)
         mDialog?.dismiss()
     }
+
+
+    var handler = Handler()
+    handler.postDelayed(object : Runnable {
+        override fun run() {
+            handler.removeCallbacksAndMessages(null)
+            binding.ivSave.callOnClick()
+        }
+    }, 10000)
 
     mDialog?.show()
 

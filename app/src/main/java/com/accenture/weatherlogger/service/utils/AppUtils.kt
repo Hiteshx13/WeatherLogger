@@ -3,6 +3,8 @@ package com.accenture.weatherlogger.service.utils
 import android.animation.AnimatorInflater
 import android.animation.ObjectAnimator
 import android.app.Activity
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -15,7 +17,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.accenture.weatherlogger.R
+import com.accenture.weatherlogger.view.activity.WeatherWidget
 import com.bumptech.glide.Glide
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -67,11 +72,48 @@ fun convertUTCtoDateTime(timestamp: Int): String {
     return DateFormat.format(format, calendar).toString()
 }
 
+fun getMinuteFromDate(strDate: String?): Int {
+    val inputPattern = "dd-MM-yyyy HH:mm"
+    val outputPattern = "HH"
+    val inputFormat = SimpleDateFormat(inputPattern)
+    val outputFormat = SimpleDateFormat(outputPattern)
+    var date: Date? = null
+    var str: String? = null
+
+    try {
+        date = inputFormat.parse(strDate)
+        str = outputFormat.format(date)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+    return str?.toInt() ?: 0
+}
+
 fun convertUTCtoTime(timestamp: Int): String {
     val calendar = Calendar.getInstance(Locale.ENGLISH)
     calendar.timeInMillis = timestamp * 1000L
     val format = "hh:mm a"
     return DateFormat.format(format, calendar).toString()
+}
+
+fun convertUTCtoHour24(timestamp: Int): Int {
+    val calendar = Calendar.getInstance(Locale.ENGLISH)
+    calendar.timeInMillis = timestamp * 1000L
+    val format = "HH"
+    return (DateFormat.format(format, calendar).toString()).toInt()
+}
+
+fun converDatetoHour24(timestamp: Int): Int {
+    val calendar = Calendar.getInstance(Locale.ENGLISH)
+    calendar.timeInMillis = timestamp * 1000L
+    val format = "HH"
+    return (DateFormat.format(format, calendar).toString()).toInt()
+}
+
+fun getCurrentDeviceTime(): String {
+    val sdf =
+        SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+    return sdf.format(Date())
 }
 
 fun isNetworkAvailable(context: Context): Boolean {
@@ -100,7 +142,7 @@ fun convertTemprature(temp: Double?): String {
 
 fun loadImage(context: Context, imageView: ImageView, imgName: String?) {
 
-    imgName?.let{
+    imgName?.let {
         val url = BASE_URL_IMAGE + imgName + IMAGE_EXTENSION
         Glide
             .with(context)
@@ -138,4 +180,20 @@ fun animateFromRightFull(context: Context, view: View, millisecond: Long) {
             handler.postDelayed(this, millisecond)
         }
     }, 0)
+
+}
+
+fun updateWidget(context: Context) {
+
+    val intent = Intent(context, WeatherWidget::class.java)
+    intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+    // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+    val ids: IntArray = AppWidgetManager.getInstance(context)
+        .getAppWidgetIds(ComponentName(context, WeatherWidget::class.java))
+    // .getAppWidgetI‌​ds(ComponentName(getApplication(), WeatherWidget::class.java))
+    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+    context.sendBroadcast(intent)
 }

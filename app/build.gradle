@@ -8,7 +8,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.hitesh.weatherlogger"
+        applicationId "com.accenture.weatherlogger"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1

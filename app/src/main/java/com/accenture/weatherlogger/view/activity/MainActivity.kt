@@ -34,7 +34,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
     /** IF DEVICE LOCATION IS NOT ENABLED THAN BELOW LOCATION WILL BE USED TO GET WEATHER DETAILS**/
     private var LATITUDE = "56.9512938"
     private var LONGITUDE = "24.0958929"
-    private var apiCallRepeatTime: Long = 60000
+    var apiCallRepeatTime: Long = 0
     /** BELOW VARIABLE DECIDE TO AUTO-CALL API OR NOT AT EVERY REPEATED TIME DURATION**/
     private var isAutoCallBlocked = false
     var isResponseDialogOpen = false
@@ -47,62 +47,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindView(this@MainActivity, R.layout.activity_main)
+
         viewModel =
             ViewModelProviders.of(this).get(WeatherListViewModel::class.java)
         initialization()
         observeViewModel(viewModel)
+
+
     }
-    /** API call response observer**/
-    private fun observeViewModel(viewModel: WeatherListViewModel) {
-        viewModel.getWeatherData()
-            .observe(this, Observer<WeatherDetail> { response: WeatherDetail? ->
-                if (response?.isSuccess == false) {
-                    showProgress(false)
-                    isAutoCallBlocked = false
-                } else {
-                    showProgress(false)
-                    if (response != null) {
-                        /**checking if dialog is open or not to block API call until current dialog will be closed**/
-                        isResponseDialogOpen = true
-                        showWeatherDialog(
-                            this@MainActivity,
-                            response,
-                            object :
-                                ItemClickListener {
-                                override fun onClick(status: Boolean) {
-                                    /**checking if dialog is open or not to block API call untill current dialog will be closed**/
-                                    isResponseDialogOpen = false
-                                    if (status) {
-                                        val strResponse = Gson().toJson(response)
-                                        var weatherData =
-                                            WeatherDetailString(WeatherData = strResponse)
-                                        roomDB.getWeatherDao()
-                                            .insertData(weatherData)
 
-                                        adapter.addNewItem(weatherData)
-                                        updateView()
-                                    }
-                                    setAutoCall(isAutoCallBlocked)
-
-                                    /** unblock auto api call**/
-                                    isAutoCallBlocked = false
-                                }
-                            })
-                    } else {
-
-                        if (response?.apiResponseMessage?.isEmpty() == true) {
-                            showToast(
-                                this@MainActivity,
-                                response!!.apiResponseMessage?:""
-                            )
-                        }
-                    }
-                }
-            })
-    }
 
     /**DATA INITIALIZATION**/
     private fun initialization() {
+        /****/
+        apiCallRepeatTime = resources.getInteger(R.integer.app_auto_refresh_time).toLong()
         arrayWeather = roomDB.getWeatherDao().getAllRecords() as ArrayList<WeatherDetailString>
         locationUtils =
             LocationUtils(this, this)
@@ -138,6 +96,57 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
         /**set weather data adapter**/
         binding.rvWeather.layoutManager = LinearLayoutManager(this)
         binding.rvWeather.adapter = adapter
+    }
+    /** API call response observer**/
+    private fun observeViewModel(viewModel: WeatherListViewModel) {
+        viewModel.getWeatherData()
+            .observe(this, Observer<WeatherDetail> { response: WeatherDetail? ->
+                if (response?.isSuccess == false) {
+                    showProgress(false)
+                    isAutoCallBlocked = false
+                } else {
+                    showProgress(false)
+                    if (response != null) {
+                        /**checking if dialog is open or not to block API call until current dialog will be closed**/
+                        isResponseDialogOpen = true
+                        showWeatherDialog(
+                            this@MainActivity,
+                            response,
+                            object :
+                                ItemClickListener {
+                                override fun onClick(status: Boolean) {
+                                    /**checking if dialog is open or not to block API call untill current dialog will be closed**/
+                                    isResponseDialogOpen = false
+                                    if (status) {
+                                        val strResponse = Gson().toJson(response)
+                                        var weatherData =
+                                            WeatherDetailString(
+                                                WeatherData = strResponse,
+                                                deviceTime = getCurrentDeviceTime()
+                                            )
+                                        roomDB.getWeatherDao()
+                                            .insertData(weatherData)
+                                        adapter.addNewItem(weatherData)
+                                        updateView()
+                                        updateWidget(this@MainActivity)
+                                    }
+                                    setAutoCall(isAutoCallBlocked)
+
+                                    /** unblock auto api call**/
+                                    isAutoCallBlocked = false
+                                }
+                            })
+                    } else {
+
+                        if (response?.apiResponseMessage?.isEmpty() == true) {
+                            showToast(
+                                this@MainActivity,
+                                response!!.apiResponseMessage
+                            )
+                        }
+                    }
+                }
+            })
     }
 
     /**show dialog to ask permission for location  **/

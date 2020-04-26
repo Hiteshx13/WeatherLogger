@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialKeyguardLayout="@layout/weather_widget_day"
+    android:initialLayout="@layout/weather_widget_day"
+    android:minWidth="@dimen/_140sdp"
+    android:minHeight="@dimen/_80sdp"
+    android:previewImage="@drawable/example_appwidget_preview"
+    android:resizeMode="vertical|horizontal"
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen"/>
