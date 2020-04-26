@@ -183,17 +183,3 @@ fun animateFromRightFull(context: Context, view: View, millisecond: Long) {
 
 }
 
-fun updateWidget(context: Context) {
-
-    val intent = Intent(context, WeatherWidget::class.java)
-    intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-// since it seems the onUpdate() is only fired on that:
-    // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-// since it seems the onUpdate() is only fired on that:
-    val ids: IntArray = AppWidgetManager.getInstance(context)
-        .getAppWidgetIds(ComponentName(context, WeatherWidget::class.java))
-    // .getAppWidgetI‌​ds(ComponentName(getApplication(), WeatherWidget::class.java))
-    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
-    context.sendBroadcast(intent)
-}

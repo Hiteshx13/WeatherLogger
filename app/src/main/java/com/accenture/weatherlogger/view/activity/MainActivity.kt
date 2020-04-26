@@ -1,5 +1,8 @@
 package com.accenture.weatherlogger.view.activity
 
+import android.app.Activity
+import android.app.PendingIntent
+import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -10,6 +13,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.RemoteViews
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +46,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
     var handlerAutoCall = Handler()
     lateinit var viewModel: WeatherListViewModel
     private var locationUtils: LocationUtils? = null
+    private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     var arrayWeather = ArrayList<WeatherDetailString>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +58,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
         initialization()
         observeViewModel(viewModel)
 
+        val configIntent = intent
+        val extras = configIntent.extras
+        if (extras != null) {
+            appWidgetId = extras.getInt(
+                AppWidgetManager.EXTRA_APPWIDGET_ID,
+                AppWidgetManager.INVALID_APPWIDGET_ID
+            )
+        }
+        val resultValue = Intent()
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+        setResult(Activity.RESULT_CANCELED, resultValue)
+        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+            finish()
+        }
 
     }
 
@@ -97,6 +116,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
         binding.rvWeather.layoutManager = LinearLayoutManager(this)
         binding.rvWeather.adapter = adapter
     }
+
     /** API call response observer**/
     private fun observeViewModel(viewModel: WeatherListViewModel) {
         viewModel.getWeatherData()
@@ -127,8 +147,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
                                         roomDB.getWeatherDao()
                                             .insertData(weatherData)
                                         adapter.addNewItem(weatherData)
+                                        binding.rvWeather.scrollToPosition(arrayWeather.size - 1)
                                         updateView()
-                                        updateWidget(this@MainActivity)
+                                        /** updating widget data**/
+                                        updateWidget()
                                     }
                                     setAutoCall(isAutoCallBlocked)
 
@@ -166,6 +188,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
                     }
                 }
             })
+    }
+
+    fun updateMyWidget() {
+
     }
 
     private fun showProgress(isShow: Boolean) {
@@ -315,5 +341,43 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
             }
         }
         return true
+    }
+
+
+    fun updateWidget() {
+        val appWidgetManager = AppWidgetManager.getInstance(this)
+
+        val intent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+
+        val remoteViews: RemoteViews
+
+        if (arrayWeather.size == 0) {
+            remoteViews = RemoteViews(packageName, R.layout.weather_widget_day)
+            remoteViews.setTextViewText(
+                R.id.tvStatus,
+                resources.getString(R.string.no_data_found)
+            )
+        } else {
+            val model = arrayWeather[arrayWeather.size - 1]
+            val modelTemprature: WeatherDetail =
+                Gson().fromJson(model.WeatherData, WeatherDetail::class.java)
+
+            remoteViews = if (arrayWeather.size / 2 == 0) {
+                RemoteViews(packageName, R.layout.weather_widget_night)
+            } else {
+                RemoteViews(packageName, R.layout.weather_widget_day)
+            }
+            remoteViews.setTextViewText(R.id.tvTemprature, modelTemprature.current?.getTemprature())
+            remoteViews.setTextViewText(R.id.tvStatus, modelTemprature.current?.getStatus())
+        }
+        remoteViews.setOnClickPendingIntent(R.id.llRootWidget, pendingIntent)
+        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+
+
+        val resultValue = Intent()
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+        setResult(Activity.RESULT_OK, resultValue)
+        finish()
     }
 }

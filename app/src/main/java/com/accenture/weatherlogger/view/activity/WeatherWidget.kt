@@ -5,12 +5,10 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.RemoteViews
 import com.accenture.weatherlogger.R
 import com.accenture.weatherlogger.service.database.AppDatabase
 import com.accenture.weatherlogger.service.retrofit.pojo.response.WeatherDetail
-import com.accenture.weatherlogger.service.utils.getMinuteFromDate
 import com.google.gson.Gson
 
 /**
@@ -42,15 +40,14 @@ internal fun updateAppWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
-    var intent = Intent(context, MainActivity::class.java)
-    var pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+    val intent = Intent(context, MainActivity::class.java)
+    val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
 
-    var roomDB: AppDatabase = AppDatabase.getDatabase(context)
-    var totalDBRecords = roomDB.getWeatherDao().getCount()
+    val roomDB: AppDatabase = AppDatabase.getDatabase(context)
+    val totalDBRecords = roomDB.getWeatherDao().getCount()
 
-    var remoteViews: RemoteViews
-
+    val remoteViews: RemoteViews
     if (totalDBRecords == 0) {
         remoteViews = RemoteViews(context.packageName, R.layout.weather_widget_day)
         remoteViews.setTextViewText(
@@ -58,23 +55,17 @@ internal fun updateAppWidget(
             context.resources.getString(R.string.no_data_found)
         )
     } else {
-        val model = roomDB.getWeatherDao().getAllRecords().get(totalDBRecords - 1)
+        val model = roomDB.getWeatherDao().getAllRecords()[totalDBRecords - 1]
         val modelTemprature: WeatherDetail =
             Gson().fromJson(model.WeatherData, WeatherDetail::class.java)
 
-        var dateHour = getMinuteFromDate(model.deviceTime)
-
-        if (totalDBRecords / 2 == 0) {
-            remoteViews = RemoteViews(context.packageName, R.layout.weather_widget_day)
+        remoteViews = if (totalDBRecords / 2 == 0) {
+            RemoteViews(context.packageName, R.layout.weather_widget_night)
         } else {
-            remoteViews = RemoteViews(context.packageName, R.layout.weather_widget_night)
+            RemoteViews(context.packageName, R.layout.weather_widget_day)
         }
-
         remoteViews.setTextViewText(R.id.tvTemprature, modelTemprature.current?.getTemprature())
         remoteViews.setTextViewText(R.id.tvStatus, modelTemprature.current?.getStatus())
-
-        Log.d("#Widger: ", "Temp: " + modelTemprature.current?.getTemprature())
-        Log.d("#Widger: ", "status: " + modelTemprature.current?.getStatus())
     }
     remoteViews.setOnClickPendingIntent(R.id.llRootWidget, pendingIntent)
     appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
