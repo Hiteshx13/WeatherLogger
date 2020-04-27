@@ -9,20 +9,10 @@
             type="com.accenture.weatherlogger.service.retrofit.pojo.response.Daily" />
     </data>
 
-    <!-- <androidx.cardview.widget.CardView
-         android:layout_width="@dimen/_130sdp"
-         android:layout_height="wrap_content"
-         android:layout_marginStart="@dimen/dp10"
-         android:layout_marginEnd="@dimen/dp10"
-         android:layout_marginBottom="@dimen/_5sdp"
-         card_view:cardBackgroundColor="@color/colorGray"
-         card_view:cardCornerRadius="0dp"
-         card_view:cardElevation="@dimen/_5sdp">
- -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_border_blue_filled_white"
+        android:background="@drawable/shape_border_blue_filled_white_trans"
         android:orientation="vertical"
         android:paddingBottom="@dimen/_5sdp">
 

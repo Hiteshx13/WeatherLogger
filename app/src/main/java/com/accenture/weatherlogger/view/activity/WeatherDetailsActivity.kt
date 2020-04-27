@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
@@ -70,6 +71,9 @@ class WeatherDetailsActivity : BaseActivity<ActivityWeatherDetailsBinding>() {
             binding.rvHourly.layoutManager = LinearLayoutManager(this)
             binding.rvHourly.adapter = adapter
         }
+
+        binding.progressbar.visibility = View.GONE
+        binding.llData.visibility = View.VISIBLE
     }
 
     private fun inflateDailyData() {

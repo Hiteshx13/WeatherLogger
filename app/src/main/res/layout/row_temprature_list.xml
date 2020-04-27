@@ -78,7 +78,7 @@
                         android:id="@+id/tvStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/font_progress"
+                        android:fontFamily="@font/font_hoops"
                         android:text="@{model.current.getStatus()}"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_15ssp"
