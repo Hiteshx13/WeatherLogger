@@ -2,10 +2,18 @@
 <resources>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorTransparent">#00000000</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhiteTrans">#9FFFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorBlackTrans">#B7000000</color>
     <color name="colorGray">#A1A1A1</color>
     <color name="colorGrayTrans">#97A1A1A1</color>
+
+    <color name="colorSky">#AD87CEEB</color>
+    <color name="colorYellow">#9EF4B400</color>
+
+
+
 </resources>

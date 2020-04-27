@@ -15,5 +15,8 @@
     <string name="temprature">Temprature:</string>
     <string name="date">Date:</string>
     <string name="feels_like">Feels Like</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="no_data_found">No data found </string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.accenture.weatherlogger.service.retrofit.pojo.response.WeatherDetail" />
+            type="com.hitesh.weatherlogger.service.retrofit.pojo.response.WeatherDetail" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -78,14 +78,13 @@
                         android:id="@+id/tvStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/font_progress"
+                        android:fontFamily="@font/font_hoops"
                         android:text="@{model.current.getStatus()}"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_15ssp"
                         android:maxLines="2"
                         tools:text="Clear" />
                 </LinearLayout>
-
 
             </LinearLayout>
 
