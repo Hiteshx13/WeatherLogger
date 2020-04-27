@@ -61,11 +61,12 @@ fun showWeatherDialog(
     }
 
 
-    var handler = Handler()
-    handler.postDelayed(object : Runnable {
-        override fun run() {
-            handler.removeCallbacksAndMessages(null)
-            binding.ivSave.callOnClick()
+    /**handler to perform auto click after 10 second if dialog is visible**/
+    val handler = Handler()
+    handler.postDelayed({
+        handler.removeCallbacksAndMessages(null)
+        if(mDialog?.isShowing==true){
+            binding.ivSave.performClick()
         }
     }, 10000)
 

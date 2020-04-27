@@ -3,6 +3,7 @@ package com.accenture.weatherlogger.view.activity
 import android.app.Activity
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -58,21 +59,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
         initialization()
         observeViewModel(viewModel)
 
-        val configIntent = intent
-        val extras = configIntent.extras
-        if (extras != null) {
-            appWidgetId = extras.getInt(
-                AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID
-            )
+        appWidgetId = getSharedPreferences(resources.getString(R.string.app_name), 0).getInt(WIDGET_KEY,0)
+
+        /*
+        var pref = context.getSharedPreferences(context.resources.getString(R.string.app_name), 0)
+        * val name = ComponentName(this@MainActivity, WeatherWidget::class.java)
+        val ids = AppWidgetManager.getInstance(this@MainActivity).getAppWidgetIds(name)
+        if (ids != null) {
+            appWidgetId = ids[0]
         }
         val resultValue = Intent()
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        setResult(Activity.RESULT_CANCELED, resultValue)
-        if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            finish()
-        }
-
+        setResult(Activity.RESULT_CANCELED, resultValue)*/
     }
 
 
@@ -378,6 +376,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
         val resultValue = Intent()
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         setResult(Activity.RESULT_OK, resultValue)
-        finish()
     }
 }

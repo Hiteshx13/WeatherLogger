@@ -29,6 +29,7 @@ var BASE_URL_IMAGE = "http://openweathermap.org/img/w/"
 var ID_WEATHER_APP = "235bef5a99d6bc6193525182c409602c"
 var IMAGE_EXTENSION = ".png"
 var WEATHER_DETAILS = "WEATHER_DETAILS"
+var WIDGET_KEY = "widget_key"
 var ANIM_TIME_IMAGE: Long = 5000
 var ANIM_TIME_TEXT: Long = 8000
 var ANIM_TIME_300: Long = 8000

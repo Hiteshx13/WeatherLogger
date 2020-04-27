@@ -9,6 +9,7 @@ import android.widget.RemoteViews
 import com.accenture.weatherlogger.R
 import com.accenture.weatherlogger.service.database.AppDatabase
 import com.accenture.weatherlogger.service.retrofit.pojo.response.WeatherDetail
+import com.accenture.weatherlogger.service.utils.WIDGET_KEY
 import com.google.gson.Gson
 
 /**
@@ -43,7 +44,9 @@ internal fun updateAppWidget(
     val intent = Intent(context, MainActivity::class.java)
     val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
-
+    var pref = context.getSharedPreferences(context.resources.getString(R.string.app_name), 0)
+    var editText = pref.edit()
+    editText.putInt(WIDGET_KEY, appWidgetId)
     val roomDB: AppDatabase = AppDatabase.getDatabase(context)
     val totalDBRecords = roomDB.getWeatherDao().getCount()
 
