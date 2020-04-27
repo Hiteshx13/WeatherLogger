@@ -4,7 +4,7 @@ This project is developed in Kotlin to get weather details based on current loca
 API call retrives weather data from "https://openweathermap.org"
 If user don't give access for device location, than Riga city's locatio is used default to check application performance.
 
- -Room database used to store location data
+ [-Room database used to store location data] (screen_widget.jpg)
  
  -Retrofit with repository pattern used for API call
  
