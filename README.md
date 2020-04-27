@@ -20,9 +20,13 @@ All Animations in peoject are implemented using xml files.
 ![Widget Screen](/screenshot/screen1.jpg)
 
 ## Application Screenshots
-![](/screenshot/screen2.jpg) ![](/screenshot/screen3.jpg) 
+![](/screenshot/screen2.jpg)![](/screenshot/screen3.jpg)![](/screenshot/screen4.jpg)
 
-![](/screenshot/screen4.jpg)  ![](/screenshot/screen5.jpg) 
 
-![](/screenshot/screen6.jpg)  ![](/screenshot/screen7.jpg)
+
+![](/screenshot/screen5.jpg) 
+
+
+
+![](/screenshot/screen6.jpg)![](/screenshot/screen7.jpg)
 
