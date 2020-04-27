@@ -16,6 +16,6 @@ If user don't give access for device location, than Riga city's locatio is used 
 
 All Animations in peoject are implemented using xml files.
 
-## Widget Screen
+## Application Widget
 ![Widget Screen](/screenshot/screen_widget.jpg)
 
