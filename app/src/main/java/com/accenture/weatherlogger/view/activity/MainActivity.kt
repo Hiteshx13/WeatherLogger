@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -49,6 +50,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
     private var locationUtils: LocationUtils? = null
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     var arrayWeather = ArrayList<WeatherDetailString>()
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +61,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
         initialization()
         observeViewModel(viewModel)
 
-        appWidgetId = getSharedPreferences(resources.getString(R.string.app_name), 0).getInt(WIDGET_KEY,0)
 
         /*
         var pref = context.getSharedPreferences(context.resources.getString(R.string.app_name), 0)
@@ -79,6 +80,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
         /****/
         apiCallRepeatTime = resources.getInteger(R.integer.app_auto_refresh_time).toLong()
         arrayWeather = roomDB.getWeatherDao().getAllRecords() as ArrayList<WeatherDetailString>
+        sharedPreferences = getSharedPreferences(resources.getString(R.string.app_name), 0)
         locationUtils =
             LocationUtils(this, this)
         locationUtils?.init()
@@ -149,6 +151,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
                                         updateView()
                                         /** updating widget data**/
                                         updateWidget()
+                                        sendUpdateBroadcast()
                                     }
                                     setAutoCall(isAutoCallBlocked)
 
@@ -343,6 +346,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
 
 
     fun updateWidget() {
+        appWidgetId = sharedPreferences.getInt(WIDGET_KEY, AppWidgetManager.INVALID_APPWIDGET_ID)
         val appWidgetManager = AppWidgetManager.getInstance(this)
 
         val intent = Intent(this, MainActivity::class.java)
@@ -376,5 +380,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
         val resultValue = Intent()
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         setResult(Activity.RESULT_OK, resultValue)
+    }
+
+    fun sendUpdateBroadcast(){
+        val intent = Intent(this, WeatherWidget::class.java)
+        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+        // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+// since it seems the onUpdate() is only fired on that:
+        val name = ComponentName(this@MainActivity, WeatherWidget::class.java)
+        val ids = AppWidgetManager.getInstance(this@MainActivity).getAppWidgetIds(name)
+      /*  val ids: IntArray = AppWidgetManager.getInstance(application)
+            .getAppWidgetI‌​ds(ComponentName(getApplication(), WeatherWidget::class.java))*/
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+        sendBroadcast(intent)
     }
 }

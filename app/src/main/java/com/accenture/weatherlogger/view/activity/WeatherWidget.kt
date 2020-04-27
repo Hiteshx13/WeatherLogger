@@ -62,10 +62,10 @@ internal fun updateAppWidget(
         val modelTemprature: WeatherDetail =
             Gson().fromJson(model.WeatherData, WeatherDetail::class.java)
 
-        remoteViews = if (totalDBRecords / 2 == 0) {
-            RemoteViews(context.packageName, R.layout.weather_widget_night)
-        } else {
+        remoteViews = if (totalDBRecords % 2 == 0) {
             RemoteViews(context.packageName, R.layout.weather_widget_day)
+        } else {
+            RemoteViews(context.packageName, R.layout.weather_widget_night)
         }
         remoteViews.setTextViewText(R.id.tvTemprature, modelTemprature.current?.getTemprature())
         remoteViews.setTextViewText(R.id.tvStatus, modelTemprature.current?.getStatus())
