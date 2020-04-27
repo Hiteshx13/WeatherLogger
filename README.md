@@ -12,7 +12,7 @@ If user don't give access for device location, than Riga city's locatio is used 
  
  -Widget created day and night mode. for test purpose, database field count is used to switch widged mode.
  
- Ex: If database total record count is ODD , than app widged will be shown in night mode. If database total record count is EVEN than day mode is used for App widged.
+ Ex: If database total record count is ODD number , than app widged will be shown in night mode. If database total record count is EVEN number, than day mode is used for App widged.
 
 All Animations in peoject are implemented using xml files.
 
