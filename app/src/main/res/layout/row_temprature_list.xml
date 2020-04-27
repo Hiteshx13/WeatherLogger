@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.accenture.weatherlogger.service.retrofit.pojo.response.WeatherDetail" />
+            type="com.hitesh.weatherlogger.service.retrofit.pojo.response.WeatherDetail" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -85,7 +85,6 @@
                         android:maxLines="2"
                         tools:text="Clear" />
                 </LinearLayout>
-
 
             </LinearLayout>
 

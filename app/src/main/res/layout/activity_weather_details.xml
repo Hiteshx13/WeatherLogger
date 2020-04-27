@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.accenture.weatherlogger.service.retrofit.pojo.response.WeatherDetail" />
+            type="com.hitesh.weatherlogger.service.retrofit.pojo.response.WeatherDetail" />
     </data>
 
     <RelativeLayout
