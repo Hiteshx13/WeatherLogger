@@ -8,7 +8,7 @@ If user don't give access for device location, than Riga city's locatio is used 
  
  -Retrofit with repository pattern used for API call
  
- -MVVM pattern followed for appstructure.
+ -MVVM pattern followed for app structure.
  
  -Widget created day and night mode. for test purpose, database field count is used to switch widged mode.
  
@@ -16,5 +16,5 @@ If user don't give access for device location, than Riga city's locatio is used 
 
 All Animations in peoject are implemented using xml files.
 
-[Widget Screen] (screen_widget.jpg)
+[Widget Screen] (.screen_widget.jpg)
 
