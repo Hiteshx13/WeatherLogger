@@ -14,6 +14,7 @@ import com.accenture.weatherlogger.service.utils.ANIM_TIME_IMAGE
 import com.accenture.weatherlogger.service.utils.ANIM_TIME_TEXT
 import com.accenture.weatherlogger.service.utils.animateFlip
 import com.accenture.weatherlogger.service.utils.loadImage
+import com.accenture.weatherlogger.view.callback.ItemDeleteListener
 import com.accenture.weatherlogger.view.callback.PositionClickListener
 import com.google.gson.Gson
 
@@ -85,7 +86,4 @@ class TempratureAdapter(
         return arrayWeather.size
     }
 
-    interface ItemDeleteListener {
-        fun onDelete(pos: Int)
-    }
 }

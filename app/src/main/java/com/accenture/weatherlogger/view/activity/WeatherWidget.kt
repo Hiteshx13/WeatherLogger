@@ -51,6 +51,8 @@ internal fun updateAppWidget(
     val totalDBRecords = roomDB.getWeatherDao().getCount()
 
     val remoteViews: RemoteViews
+    /**Here assumed that odd and even records will change widget theme. total db record count will
+     * be used to set theme for day and night. */
     if (totalDBRecords == 0) {
         remoteViews = RemoteViews(context.packageName, R.layout.weather_widget_day)
         remoteViews.setTextViewText(

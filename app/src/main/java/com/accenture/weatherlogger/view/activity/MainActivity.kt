@@ -1,11 +1,8 @@
 package com.accenture.weatherlogger.view.activity
 
-import android.app.Activity
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -15,7 +12,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.RemoteViews
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +23,7 @@ import com.accenture.weatherlogger.service.retrofit.pojo.response.WeatherDetail
 import com.accenture.weatherlogger.service.utils.*
 import com.accenture.weatherlogger.view.adapter.TempratureAdapter
 import com.accenture.weatherlogger.view.callback.ItemClickListener
+import com.accenture.weatherlogger.view.callback.ItemDeleteListener
 import com.accenture.weatherlogger.view.callback.PositionClickListener
 import com.accenture.weatherlogger.viewmodel.WeatherListViewModel
 import com.google.gson.Gson
@@ -48,39 +45,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
     var handlerAutoCall = Handler()
     lateinit var viewModel: WeatherListViewModel
     private var locationUtils: LocationUtils? = null
-    private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     var arrayWeather = ArrayList<WeatherDetailString>()
-    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindView(this@MainActivity, R.layout.activity_main)
-
         viewModel =
             ViewModelProviders.of(this).get(WeatherListViewModel::class.java)
         initialization()
         observeViewModel(viewModel)
-
-
-        /*
-        var pref = context.getSharedPreferences(context.resources.getString(R.string.app_name), 0)
-        * val name = ComponentName(this@MainActivity, WeatherWidget::class.java)
-        val ids = AppWidgetManager.getInstance(this@MainActivity).getAppWidgetIds(name)
-        if (ids != null) {
-            appWidgetId = ids[0]
-        }
-        val resultValue = Intent()
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        setResult(Activity.RESULT_CANCELED, resultValue)*/
     }
-
 
     /**DATA INITIALIZATION**/
     private fun initialization() {
         /****/
         apiCallRepeatTime = resources.getInteger(R.integer.app_auto_refresh_time).toLong()
         arrayWeather = roomDB.getWeatherDao().getAllRecords() as ArrayList<WeatherDetailString>
-        sharedPreferences = getSharedPreferences(resources.getString(R.string.app_name), 0)
         locationUtils =
             LocationUtils(this, this)
         locationUtils?.init()
@@ -100,7 +80,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
                     }
                 },
                 object :
-                    TempratureAdapter.ItemDeleteListener {
+                    ItemDeleteListener {
                     override fun onDelete(pos: Int) {
 
                         if (arrayWeather.size > 0) {
@@ -150,7 +130,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
                                         binding.rvWeather.scrollToPosition(arrayWeather.size - 1)
                                         updateView()
                                         /** updating widget data**/
-                                        updateWidget()
+                                        // updateWidget()
                                         sendUpdateBroadcast()
                                     }
                                     setAutoCall(isAutoCallBlocked)
@@ -189,10 +169,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
                     }
                 }
             })
-    }
-
-    fun updateMyWidget() {
-
     }
 
     private fun showProgress(isShow: Boolean) {
@@ -344,55 +320,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), LocationListener,
         return true
     }
 
-
-    fun updateWidget() {
-        appWidgetId = sharedPreferences.getInt(WIDGET_KEY, AppWidgetManager.INVALID_APPWIDGET_ID)
-        val appWidgetManager = AppWidgetManager.getInstance(this)
-
-        val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-
-        val remoteViews: RemoteViews
-
-        if (arrayWeather.size == 0) {
-            remoteViews = RemoteViews(packageName, R.layout.weather_widget_day)
-            remoteViews.setTextViewText(
-                R.id.tvStatus,
-                resources.getString(R.string.no_data_found)
-            )
-        } else {
-            val model = arrayWeather[arrayWeather.size - 1]
-            val modelTemprature: WeatherDetail =
-                Gson().fromJson(model.WeatherData, WeatherDetail::class.java)
-
-            remoteViews = if (arrayWeather.size / 2 == 0) {
-                RemoteViews(packageName, R.layout.weather_widget_night)
-            } else {
-                RemoteViews(packageName, R.layout.weather_widget_day)
-            }
-            remoteViews.setTextViewText(R.id.tvTemprature, modelTemprature.current?.getTemprature())
-            remoteViews.setTextViewText(R.id.tvStatus, modelTemprature.current?.getStatus())
-        }
-        remoteViews.setOnClickPendingIntent(R.id.llRootWidget, pendingIntent)
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
-
-
-        val resultValue = Intent()
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-        setResult(Activity.RESULT_OK, resultValue)
-    }
-
-    fun sendUpdateBroadcast(){
+    fun sendUpdateBroadcast() {
         val intent = Intent(this, WeatherWidget::class.java)
         intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-// Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-// since it seems the onUpdate() is only fired on that:
-        // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
-// since it seems the onUpdate() is only fired on that:
         val name = ComponentName(this@MainActivity, WeatherWidget::class.java)
         val ids = AppWidgetManager.getInstance(this@MainActivity).getAppWidgetIds(name)
-      /*  val ids: IntArray = AppWidgetManager.getInstance(application)
-            .getAppWidgetI‌​ds(ComponentName(getApplication(), WeatherWidget::class.java))*/
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
         sendBroadcast(intent)
     }
