@@ -3,7 +3,7 @@ Project for weather log
 This project is developed in Kotlin to get weather details based on current location.
 API call retrives weather data from "https://openweathermap.org"
 
-## Application Video link: https://bit.ly/2KD4SsE
+## Application Video link: https://bit.ly/3bKHoxJ
 
 If user don't give access for device location, than Riga city's locatio is used default to check application performance.
 
